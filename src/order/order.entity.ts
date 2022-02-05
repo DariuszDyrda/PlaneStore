@@ -1,4 +1,3 @@
-import { Admin } from '../admin/admin.entity';
 import {
   Entity,
   Column,
@@ -7,39 +6,41 @@ import {
   BeforeUpdate,
   ManyToOne,
   RelationId,
-  OneToMany,
 } from 'typeorm';
-import { Order } from 'src/order/order.entity';
+import { Plane } from 'src/plane/plane.entity';
+
+export enum OrderStatus {
+  Pending = 'Pending',
+  Accepted = 'Accepted',
+  Rejected = 'Rejected',
+}
 
 @Entity()
-export class Plane {
+export class Order {
   @Index({ unique: true })
   @PrimaryGeneratedColumn()
   id: number;
 
   @Column()
-  name: string;
+  clientName: string;
 
   @Column()
-  description: string;
+  clientAddress: string;
 
   @Column()
-  photoUrl: string;
+  status: OrderStatus;
+
+  @RelationId((order: Order) => order.plane)
+  planeId: number;
+
+  @ManyToOne(() => Plane, (plane) => plane.id)
+  plane: Plane;
 
   @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
   createdAt: Date;
 
   @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
   updatedAt: Date;
-
-  @RelationId((plane: Plane) => plane.createdBy)
-  createdById: number;
-
-  @ManyToOne(() => Admin, (admin) => admin.id)
-  createdBy: Admin;
-
-  @OneToMany(() => Order, (order) => order.id)
-  orders: Order[];
 
   @BeforeUpdate()
   updateTimestamp() {

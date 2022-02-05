@@ -8,6 +8,7 @@ import { DatabaseModule } from './database.module';
 import { AuthModule } from './auth/auth.module';
 import { AdminModule } from './admin/admin.module';
 import { PlaneModule } from './plane/plane.module';
+import { OrderModule } from './order/order.module';
 
 @Module({
   imports: [
@@ -21,6 +22,7 @@ import { PlaneModule } from './plane/plane.module';
     AuthModule,
     AdminModule,
     PlaneModule,
+    OrderModule,
   ],
   controllers: [AppController],
   providers: [AppService],
