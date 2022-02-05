@@ -1,3 +1,4 @@
+import { ApiHideProperty } from '@nestjs/swagger';
 import {
   Entity,
   Column,
@@ -33,6 +34,7 @@ export class Order {
   @RelationId((order: Order) => order.plane)
   planeId: number;
 
+  @ApiHideProperty()
   @ManyToOne(() => Plane, (plane) => plane.id)
   plane: Plane;
 

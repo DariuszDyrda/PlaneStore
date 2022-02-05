@@ -10,6 +10,7 @@ import {
   OneToMany,
 } from 'typeorm';
 import { Order } from '../order/order.entity';
+import { ApiHideProperty } from '@nestjs/swagger';
 
 @Entity()
 export class Plane {
@@ -35,9 +36,11 @@ export class Plane {
   @RelationId((plane: Plane) => plane.createdBy)
   createdById: number;
 
+  @ApiHideProperty()
   @ManyToOne(() => Admin, (admin) => admin.id)
   createdBy: Admin;
 
+  @ApiHideProperty()
   @OneToMany(() => Order, (order) => order.id)
   orders: Order[];
 

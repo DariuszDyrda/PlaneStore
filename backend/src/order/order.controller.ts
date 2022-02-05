@@ -11,17 +11,27 @@ import {
 import {
   ApiBearerAuth,
   ApiCreatedResponse,
+  ApiHideProperty,
   ApiNotFoundResponse,
   ApiOkResponse,
+  ApiProperty,
   ApiTags,
   ApiUnauthorizedResponse,
 } from '@nestjs/swagger';
+import { Plane } from 'src/plane/plane.entity';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { IdParams } from '../typings';
 import { CreateOrderDto } from './dto/create-order.dto';
 import { UpdateOrderDto } from './dto/update-order.dto';
 import { Order } from './order.entity';
 import { OrderService } from './order.service';
+
+class OrderWithPlane extends Order {
+  @ApiProperty({ type: Plane })
+  plane: Plane;
+  @ApiHideProperty()
+  planeId: number;
+}
 
 @Controller('order')
 @ApiTags('order')
@@ -40,7 +50,7 @@ export class OrderController {
   @UseGuards(JwtAuthGuard)
   @Get('/:id')
   @ApiOkResponse({
-    type: Order,
+    type: OrderWithPlane,
   })
   @ApiUnauthorizedResponse()
   @ApiNotFoundResponse()
@@ -72,7 +82,7 @@ export class OrderController {
   @UseGuards(JwtAuthGuard)
   @Put('/:id')
   @ApiOkResponse({
-    type: Order,
+    type: OrderWithPlane,
   })
   @ApiUnauthorizedResponse()
   @ApiNotFoundResponse()
