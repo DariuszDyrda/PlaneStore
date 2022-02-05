@@ -1,4 +1,13 @@
-import { Body, Controller, Get, Param, Post, UseGuards } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Post,
+  Put,
+  UseGuards,
+} from '@nestjs/common';
 import {
   ApiBearerAuth,
   ApiCreatedResponse,
@@ -10,6 +19,7 @@ import {
 import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 import { IdParams } from 'src/typings';
 import { CreateOrderDto } from './dto/create-order.dto';
+import { UpdateOrderDto } from './dto/update-order.dto';
 import { Order } from './order.entity';
 import { OrderService } from './order.service';
 
@@ -47,5 +57,29 @@ export class OrderController {
   @ApiUnauthorizedResponse()
   findAll(): Promise<Order[]> {
     return this.orderService.findAll();
+  }
+
+  @ApiBearerAuth()
+  @UseGuards(JwtAuthGuard)
+  @Delete('/:id')
+  @ApiOkResponse()
+  @ApiUnauthorizedResponse()
+  remove(@Param() params: IdParams): Promise<void> {
+    return this.orderService.delete(params.id);
+  }
+
+  @ApiBearerAuth()
+  @UseGuards(JwtAuthGuard)
+  @Put('/:id')
+  @ApiOkResponse({
+    type: Order,
+  })
+  @ApiUnauthorizedResponse()
+  @ApiNotFoundResponse()
+  update(
+    @Param() params: IdParams,
+    @Body() orderData: UpdateOrderDto,
+  ): Promise<Order> {
+    return this.orderService.update(params.id, orderData);
   }
 }
