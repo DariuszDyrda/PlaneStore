@@ -7,7 +7,7 @@ import {
   ManyToOne,
   RelationId,
 } from 'typeorm';
-import { Plane } from 'src/plane/plane.entity';
+import { Plane } from '../plane/plane.entity';
 
 export enum OrderStatus {
   Pending = 'Pending',

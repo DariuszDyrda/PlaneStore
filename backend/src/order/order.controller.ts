@@ -16,8 +16,8 @@ import {
   ApiTags,
   ApiUnauthorizedResponse,
 } from '@nestjs/swagger';
-import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
-import { IdParams } from 'src/typings';
+import { JwtAuthGuard } from '../auth/jwt-auth.guard';
+import { IdParams } from '../typings';
 import { CreateOrderDto } from './dto/create-order.dto';
 import { UpdateOrderDto } from './dto/update-order.dto';
 import { Order } from './order.entity';

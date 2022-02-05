@@ -9,7 +9,7 @@ import {
   RelationId,
   OneToMany,
 } from 'typeorm';
-import { Order } from 'src/order/order.entity';
+import { Order } from '../order/order.entity';
 
 @Entity()
 export class Plane {
