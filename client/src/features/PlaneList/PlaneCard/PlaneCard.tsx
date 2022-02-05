@@ -13,6 +13,7 @@ const plane = {
   photoUrl: "https://ocdn.eu/pulscms-transforms/1/lpJktkqTURBXy9jMjIyOGM2NzJkZTkwM2RmNDk0MDU2MWMzNjgzMTBhZS5qcGVnkpUDAADNAyDNAcKTBc0EsM0Cdg",
   createdAt: new Date(),
   updatedAt: new Date(),
+  price: 30000000
 }
 
 export default function PlaneCard() {
@@ -20,7 +21,7 @@ export default function PlaneCard() {
     <Card sx={{ maxWidth: 345 }}>
       <CardHeader
         title={plane.name}
-        subheader={plane.createdAt.toLocaleDateString()}
+        subheader={plane.price.toLocaleString(undefined, { maximumFractionDigits: 2}) + " USD"}
       />
       <CardMedia
         component="img"
@@ -29,7 +30,7 @@ export default function PlaneCard() {
         alt={plane.name}
       />
       <CardContent>
-        <Typography variant="body2" color="text.secondary">
+        <Typography variant="body1" color="text.secondary">
           {plane.description}
         </Typography>
       </CardContent>
