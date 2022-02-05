@@ -3,6 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { ERROR_MESSAGE } from 'src/constants/error_messages';
 import { Repository } from 'typeorm';
 import { CreatePlaneDto } from './dto/create-plane.dto';
+import { UpdatePlaneDto } from './dto/update-plane.dto';
 import { Plane } from './plane.entity';
 
 @Injectable()
@@ -24,5 +25,13 @@ export class PlaneService {
 
   async findAll(): Promise<Plane[]> {
     return this.planeRepository.find({});
+  }
+
+  async update(id: number, data: UpdatePlaneDto): Promise<Plane> {
+    // if we want to return the updated entity, there's no better way in TypeORM right now
+    const toUpdate = await this.planeRepository.findOne({ id });
+    if (!toUpdate) throw new NotFoundException(ERROR_MESSAGE.PlaneNotFound);
+    const updated = Object.assign(toUpdate, data);
+    return this.planeRepository.save(updated);
   }
 }
