@@ -22,4 +22,18 @@ export class OrderService {
     delete result.plane;
     return result;
   }
+
+  async findOne(id: number): Promise<Order> {
+    const order = await this.orderRepository.findOne(
+      { id },
+      { relations: ['plane'] },
+    );
+    if (!order) throw new NotFoundException(ERROR_MESSAGE.OrderNotFound);
+    delete order.planeId;
+    return order;
+  }
+
+  async findAll(): Promise<Order[]> {
+    return this.orderRepository.find({});
+  }
 }
