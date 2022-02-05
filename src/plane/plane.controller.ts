@@ -14,6 +14,7 @@ import { CreatePlaneDto } from './dto/create-plane.dto';
 import { Plane } from './plane.entity';
 import { PlaneService } from './plane.service';
 import {
+  ApiBearerAuth,
   ApiCreatedResponse,
   ApiNotFoundResponse,
   ApiOkResponse,
@@ -27,6 +28,7 @@ import { UpdatePlaneDto } from './dto/update-plane.dto';
 export class PlaneController {
   constructor(private readonly planeService: PlaneService) {}
 
+  @ApiBearerAuth()
   @UseGuards(JwtAuthGuard)
   @Post()
   @ApiCreatedResponse({
@@ -37,6 +39,7 @@ export class PlaneController {
     return this.planeService.create(planeData);
   }
 
+  @ApiBearerAuth()
   @UseGuards(JwtAuthGuard)
   @Put('/:id')
   @ApiOkResponse({
@@ -70,6 +73,7 @@ export class PlaneController {
     return this.planeService.findAll();
   }
 
+  @ApiBearerAuth()
   @UseGuards(JwtAuthGuard)
   @Delete('/:id')
   @ApiOkResponse()

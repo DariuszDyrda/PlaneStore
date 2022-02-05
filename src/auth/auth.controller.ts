@@ -6,7 +6,6 @@ import { LoginBody } from './dto/login.dto';
 import { JwtRefreshAuthGuard } from './jwt-auth.guard';
 import { LocalAuthGuard } from './local-auth.guard';
 
-@ApiBearerAuth()
 @ApiTags('auth')
 @Controller('auth')
 export class AuthController {
@@ -25,6 +24,7 @@ export class AuthController {
     return this.authService.login(req.user as AdminWithoutPassword);
   }
 
+  @ApiBearerAuth()
   @ApiResponse({
     status: 201,
     description: 'Return admin document, access and refresh tokens',
