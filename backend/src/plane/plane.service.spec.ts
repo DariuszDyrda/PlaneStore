@@ -16,10 +16,10 @@ const now = new Date();
 
 describe('PlaneService', () => {
   let service: PlaneService;
-  let mockPlaneService;
+  let mockPlaneRepo;
 
   beforeEach(async () => {
-    mockPlaneService = {
+    mockPlaneRepo = {
       save: jest.fn((data) =>
         Promise.resolve({
           id: data.id || 1,
@@ -48,7 +48,7 @@ describe('PlaneService', () => {
     const module: TestingModule = await Test.createTestingModule({
       providers: [
         PlaneService,
-        { provide: getRepositoryToken(Plane), useValue: mockPlaneService },
+        { provide: getRepositoryToken(Plane), useValue: mockPlaneRepo },
       ],
     }).compile();
 
@@ -75,7 +75,7 @@ describe('PlaneService', () => {
   describe('.update', () => {
     it('should return updated plane document', async () => {
       const updatedAt = new Date();
-      jest.spyOn(mockPlaneService, 'save').mockImplementation((data: object) =>
+      jest.spyOn(mockPlaneRepo, 'save').mockImplementation((data: object) =>
         Promise.resolve({
           ...data,
           updatedAt,
@@ -92,7 +92,7 @@ describe('PlaneService', () => {
     });
     it('should throw NotFoundException', async () => {
       jest
-        .spyOn(mockPlaneService, 'findOne')
+        .spyOn(mockPlaneRepo, 'findOne')
         .mockImplementation(() => Promise.resolve(undefined));
       const newData = { name: 'New name' };
       await expect(service.update(2, newData)).rejects.toThrow(
@@ -108,7 +108,7 @@ describe('PlaneService', () => {
     });
     it('should throw NotFoundException', async () => {
       jest
-        .spyOn(mockPlaneService, 'findOne')
+        .spyOn(mockPlaneRepo, 'findOne')
         .mockImplementation(() => Promise.resolve(undefined));
       await expect(service.findOne(2)).rejects.toThrow(NotFoundException);
     });
@@ -121,7 +121,7 @@ describe('PlaneService', () => {
     });
     it('should return empty array', async () => {
       jest
-        .spyOn(mockPlaneService, 'find')
+        .spyOn(mockPlaneRepo, 'find')
         .mockImplementation(() => Promise.resolve([]));
       const result = await service.findAll();
       expect(result).toHaveLength(0);
