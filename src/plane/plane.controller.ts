@@ -1,4 +1,5 @@
-import { Body, Controller, Post, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, UseGuards } from '@nestjs/common';
+import { IdParams } from '../typings';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { CreatePlaneDto } from './dto/create-plane.dto';
 import { Plane } from './plane.entity';
@@ -12,5 +13,15 @@ export class PlaneController {
   @Post()
   create(@Body() planeData: CreatePlaneDto): Promise<Plane> {
     return this.planeService.create(planeData);
+  }
+
+  @Get('/:id')
+  findOne(@Param() params: IdParams): Promise<Plane> {
+    return this.planeService.findOne(params.id);
+  }
+
+  @Get()
+  findAll(): Promise<Plane[]> {
+    return this.planeService.findAll();
   }
 }
