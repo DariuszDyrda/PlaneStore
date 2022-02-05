@@ -1,0 +1,14 @@
+import { Entity, Column, PrimaryGeneratedColumn, Index } from 'typeorm';
+
+@Entity()
+export class Admin {
+  @Index({ unique: true })
+  @PrimaryGeneratedColumn()
+  id: number;
+
+  @Column()
+  email: string;
+
+  @Column()
+  password: string;
+}

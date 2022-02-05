@@ -6,6 +6,7 @@ export const validationSchema = Joi.object({
     .valid(...Object.values(NODE_ENV))
     .required(),
   PORT: Joi.number().default(8000),
+  JWT_SECRET: Joi.string().required(),
   MYSQL_HOST: Joi.string().required(),
   MYSQL_PORT: Joi.number().required(),
   MYSQL_USER: Joi.string().required(),
