@@ -6,17 +6,17 @@ import CardActions from '@mui/material/CardActions';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 
-const plane = {
-  id: 1,
-  name: 'Airbus A380',
-  description: "This is a very gigantic aeroplane. It's the biggest passenger plane on the planet.",
-  photoUrl: "https://ocdn.eu/pulscms-transforms/1/lpJktkqTURBXy9jMjIyOGM2NzJkZTkwM2RmNDk0MDU2MWMzNjgzMTBhZS5qcGVnkpUDAADNAyDNAcKTBc0EsM0Cdg",
-  createdAt: new Date(),
-  updatedAt: new Date(),
-  price: 30000000
+export interface IPlaneProps {
+  id: number;
+  name: string;
+  description: string;
+  photoUrl: string;
+  createdAt: Date,
+  updatedAt: Date,
+  price: number;
 }
 
-export default function PlaneCard() {
+export default function PlaneCard(plane: IPlaneProps) {
   return (
     <Card sx={{ maxWidth: 345 }}>
       <CardHeader
