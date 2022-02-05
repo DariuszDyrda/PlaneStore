@@ -1,4 +1,11 @@
-import { Entity, Column, PrimaryGeneratedColumn, Index } from 'typeorm';
+import { Plane } from '../plane/plane.entity';
+import {
+  Entity,
+  Column,
+  PrimaryGeneratedColumn,
+  Index,
+  OneToMany,
+} from 'typeorm';
 
 @Entity()
 export class Admin {
@@ -11,4 +18,7 @@ export class Admin {
 
   @Column()
   password: string;
+
+  @OneToMany(() => Plane, (plane) => plane.createdBy)
+  planes: Plane[];
 }

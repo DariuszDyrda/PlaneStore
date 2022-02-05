@@ -6,6 +6,7 @@ import {
   Param,
   Post,
   Put,
+  Req,
   UseGuards,
 } from '@nestjs/common';
 import { IdParams } from '../typings';
@@ -35,8 +36,11 @@ export class PlaneController {
     type: Plane,
   })
   @ApiUnauthorizedResponse()
-  create(@Body() planeData: CreatePlaneDto): Promise<Plane> {
-    return this.planeService.create(planeData);
+  create(@Req() req, @Body() planeData: CreatePlaneDto): Promise<Plane> {
+    return this.planeService.create({
+      ...planeData,
+      createdBy: { id: req.user.id },
+    });
   }
 
   @ApiBearerAuth()

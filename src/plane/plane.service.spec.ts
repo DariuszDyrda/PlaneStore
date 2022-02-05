@@ -9,6 +9,7 @@ const planeData = {
   name: 'Airbus A380',
   description: 'The biggest passenger plane on the planet',
   photoUrl: 'https://planes.com/photos/airbus-a380.png',
+  createdById: 1,
 };
 
 const now = new Date();
@@ -62,7 +63,7 @@ describe('PlaneService', () => {
     it('should create a plane document', async () => {
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
       const { id, ...data } = planeData;
-      const result = await service.create(data);
+      const result = await service.create({ ...data, createdBy: { id: 1 } });
       expect(result).toEqual({
         ...planeData,
         createdAt: now,

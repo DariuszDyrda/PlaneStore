@@ -1,9 +1,12 @@
+import { Admin } from '../admin/admin.entity';
 import {
   Entity,
   Column,
   PrimaryGeneratedColumn,
   Index,
   BeforeUpdate,
+  ManyToOne,
+  RelationId,
 } from 'typeorm';
 
 @Entity()
@@ -26,6 +29,12 @@ export class Plane {
 
   @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
   updatedAt: Date;
+
+  @RelationId((plane: Plane) => plane.createdBy)
+  createdById: number;
+
+  @ManyToOne(() => Admin, (admin) => admin.id)
+  createdBy: Admin;
 
   @BeforeUpdate()
   updateTimestamp() {

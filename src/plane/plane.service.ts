@@ -13,8 +13,12 @@ export class PlaneService {
     private planeRepository: Repository<Plane>,
   ) {}
 
-  async create(data: CreatePlaneDto): Promise<Plane> {
-    return this.planeRepository.save(data);
+  async create(
+    data: CreatePlaneDto & { createdBy: { id: number } },
+  ): Promise<Plane> {
+    const result = await this.planeRepository.save(data);
+    delete result.createdBy;
+    return result;
   }
 
   async findOne(id: number): Promise<Plane> {
