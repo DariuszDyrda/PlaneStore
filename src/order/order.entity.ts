@@ -27,7 +27,7 @@ export class Order {
   @Column()
   clientAddress: string;
 
-  @Column()
+  @Column({ default: OrderStatus.Pending })
   status: OrderStatus;
 
   @RelationId((order: Order) => order.plane)
