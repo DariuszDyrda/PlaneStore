@@ -1,12 +1,54 @@
+import { NotFoundException } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
+import { getRepositoryToken } from '@nestjs/typeorm';
+import { Plane } from './plane.entity';
 import { PlaneService } from './plane.service';
+
+const planeData = {
+  id: 1,
+  name: 'Airbus A380',
+  description: 'The biggest passenger plane on the planet',
+  photoUrl: 'https://planes.com/photos/airbus-a380.png',
+};
+
+const now = new Date();
 
 describe('PlaneService', () => {
   let service: PlaneService;
+  let mockPlaneService;
 
   beforeEach(async () => {
+    mockPlaneService = {
+      save: jest.fn((data) =>
+        Promise.resolve({
+          id: data.id || 1,
+          ...planeData,
+          ...data,
+          createdAt: now,
+          updatedAt: now,
+        }),
+      ),
+      findOne: jest.fn((data) =>
+        Promise.resolve({
+          ...planeData,
+          ...data,
+        }),
+      ),
+      find: jest.fn((data) =>
+        Promise.resolve([
+          {
+            ...planeData,
+            ...data,
+          },
+        ]),
+      ),
+    };
+
     const module: TestingModule = await Test.createTestingModule({
-      providers: [PlaneService],
+      providers: [
+        PlaneService,
+        { provide: getRepositoryToken(Plane), useValue: mockPlaneService },
+      ],
     }).compile();
 
     service = module.get<PlaneService>(PlaneService);
@@ -14,5 +56,74 @@ describe('PlaneService', () => {
 
   it('should be defined', () => {
     expect(service).toBeDefined();
+  });
+
+  describe('.create', () => {
+    it('should create a plane document', async () => {
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      const { id, ...data } = planeData;
+      const result = await service.create(data);
+      expect(result).toEqual({
+        ...planeData,
+        createdAt: now,
+        updatedAt: now,
+      });
+    });
+  });
+
+  describe('.update', () => {
+    it('should return updated plane document', async () => {
+      const updatedAt = new Date();
+      jest.spyOn(mockPlaneService, 'save').mockImplementation((data: object) =>
+        Promise.resolve({
+          ...data,
+          updatedAt,
+        }),
+      );
+      const newData = { name: 'New name' };
+      const result = await service.update(planeData.id, newData);
+      expect(result).toEqual({
+        id: planeData.id,
+        ...planeData,
+        ...newData,
+        updatedAt,
+      });
+    });
+    it('should throw NotFoundException', async () => {
+      jest
+        .spyOn(mockPlaneService, 'findOne')
+        .mockImplementation(() => Promise.resolve(undefined));
+      const newData = { name: 'New name' };
+      await expect(service.update(2, newData)).rejects.toThrow(
+        NotFoundException,
+      );
+    });
+  });
+
+  describe('.findOne', () => {
+    it('should return plane document', async () => {
+      const result = await service.findOne(planeData.id);
+      expect(result).toEqual(planeData);
+    });
+    it('should throw NotFoundException', async () => {
+      jest
+        .spyOn(mockPlaneService, 'findOne')
+        .mockImplementation(() => Promise.resolve(undefined));
+      await expect(service.findOne(2)).rejects.toThrow(NotFoundException);
+    });
+  });
+
+  describe('.findAll', () => {
+    it('should return array of plane documents', async () => {
+      const result = await service.findAll();
+      expect(result).toHaveLength(1);
+    });
+    it('should return empty array', async () => {
+      jest
+        .spyOn(mockPlaneService, 'find')
+        .mockImplementation(() => Promise.resolve([]));
+      const result = await service.findAll();
+      expect(result).toHaveLength(0);
+    });
   });
 });

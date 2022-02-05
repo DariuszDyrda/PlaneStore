@@ -1,6 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { ERROR_MESSAGE } from 'src/constants/error_messages';
+import { ERROR_MESSAGE } from '../constants/error_messages';
 import { Repository } from 'typeorm';
 import { CreatePlaneDto } from './dto/create-plane.dto';
 import { UpdatePlaneDto } from './dto/update-plane.dto';
