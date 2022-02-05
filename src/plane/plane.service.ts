@@ -34,4 +34,8 @@ export class PlaneService {
     const updated = Object.assign(toUpdate, data);
     return this.planeRepository.save(updated);
   }
+
+  async delete(id: number): Promise<void> {
+    await this.planeRepository.delete(id);
+  }
 }

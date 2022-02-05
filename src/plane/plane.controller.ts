@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
   Param,
   Post,
@@ -67,5 +68,13 @@ export class PlaneController {
   @ApiUnauthorizedResponse()
   findAll(): Promise<Plane[]> {
     return this.planeService.findAll();
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Delete('/:id')
+  @ApiOkResponse()
+  @ApiUnauthorizedResponse()
+  remove(@Param() params: IdParams): Promise<void> {
+    return this.planeService.delete(params.id);
   }
 }
