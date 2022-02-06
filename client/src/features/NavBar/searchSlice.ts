@@ -1,11 +1,11 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { RootState } from '../../app/store';
 
-export interface CounterState {
+export interface SearchState {
   searchQuery: string;
 }
 
-const initialState: CounterState = {
+const initialState: SearchState = {
   searchQuery: '',
 };
 
