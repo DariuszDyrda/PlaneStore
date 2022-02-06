@@ -8,6 +8,8 @@ import Typography from '@mui/material/Typography';
 import BuyDialog from '../../BuyDialog/BuyDialog';
 import { useState } from 'react';
 import { AlertColor, Snackbar, Alert } from '@mui/material';
+import { useAppSelector } from '../../../app/hooks';
+import { selectAdmin } from '../../LoginDialog/loginSlicer';
 
 const PHOTO_PLACEHOLDER = 'https://pixy.org/src/40/thumbs350/405353.jpg';
 
@@ -29,6 +31,8 @@ export default function PlaneCard(plane: IPlaneProps) {
     message: 'Your order was places successfully',
   })
   const [photoUrl, setPhotoUrl] = useState(plane.photoUrl);
+
+  const admin = useAppSelector(selectAdmin);
 
   const handlePhotoError = () => {
     setPhotoUrl(PHOTO_PLACEHOLDER);
@@ -72,7 +76,9 @@ export default function PlaneCard(plane: IPlaneProps) {
         </Typography>
       </CardContent>
       <CardActions sx={{ display: 'flex', justifyContent: 'center'}}>
-        <Button variant="contained" onClick={handleBuyClick}>Buy now!</Button>
+        { !admin && (<Button variant="contained" onClick={handleBuyClick}>Buy now!</Button>) }
+        { admin && (<Button variant="contained" onClick={undefined}>Edit</Button>) }
+        { admin && (<Button variant="contained" color='error' onClick={undefined}>Delete</Button>) }
       </CardActions>
       { openBuyDialog && (
         <BuyDialog onClose={handleCloseClick} plane={plane} displaySnackBar={displaySnackBar} isSnackBarOpen={snackBarState.open} />
