@@ -11,8 +11,8 @@ export interface IPlaneProps {
   name: string;
   description: string;
   photoUrl: string;
-  createdAt: Date,
-  updatedAt: Date,
+  createdAt: string,
+  updatedAt: string,
   price: number;
 }
 
@@ -26,6 +26,7 @@ export default function PlaneCard(plane: IPlaneProps) {
       <CardMedia
         component="img"
         height="194"
+        // TODO - show photo placeholder when image can't be loaded
         image={plane.photoUrl}
         alt={plane.name}
       />
