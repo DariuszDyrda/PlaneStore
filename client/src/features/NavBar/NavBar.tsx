@@ -13,6 +13,7 @@ import { ChangeEvent, useState } from 'react';
 import { fetchPlanes } from '../PlaneList/planeListSlice';
 import { selectSearchQuery, setSearch } from './searchSlice';
 import LoginDialog from '../LoginDialog/LoginDialog';
+import { logout, selectAdmin } from '../LoginDialog/loginSlicer';
 
 const Search = styled('div')(({ theme }) => ({
   position: 'relative',
@@ -59,11 +60,15 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 export function NavBar() {
   const [openLoginDialog, setOpenLoginDialog] = useState(false);
   const dispatch = useAppDispatch();
+
   const searchQuery = useAppSelector(selectSearchQuery);
   const handleChange = (event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     dispatch(fetchPlanes({ skip: 0, take: 9, search: event.target.value }))
     dispatch(setSearch(event.target.value));
   }
+
+  const admin = useAppSelector(selectAdmin);
+
   return (
     <Box sx={{ flexGrow: 1 }}>
       <AppBar position="static">
@@ -77,7 +82,11 @@ export function NavBar() {
           >
             <FlightIcon />
           </IconButton>
-          <Button color="inherit" onClick={() => setOpenLoginDialog(true)}>Login</Button>
+          {
+            admin ?
+              (<Button color="inherit" onClick={() => dispatch(logout())}>Logout</Button>)
+              : (<Button color="inherit" onClick={() => setOpenLoginDialog(true)}>Login</Button>)
+          }
           <LoginDialog isOpen={openLoginDialog} close={() => setOpenLoginDialog(false)}/>
           <Typography
             variant="h6"
@@ -85,7 +94,7 @@ export function NavBar() {
             component="div"
             sx={{ flexGrow: 1, display: { xs: 'none', sm: 'block' } }}
           >
-            PLANE STORE
+            {admin?.email || "PLANE STORE"}
           </Typography>
           <Search>
             <SearchIconWrapper>

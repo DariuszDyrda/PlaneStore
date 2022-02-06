@@ -5,6 +5,9 @@ import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
+import { useState } from 'react';
+import { useAppDispatch } from '../../app/hooks';
+import { loginAdmin } from './loginSlicer';
 
 interface ILoginDialogProps {
     isOpen: boolean;
@@ -12,6 +15,15 @@ interface ILoginDialogProps {
 }
 
 export default function LoginDialog(props: ILoginDialogProps) {
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+
+  const dispatch = useAppDispatch();
+  const handleLogin = () => {
+    dispatch(loginAdmin({ email, password }));
+    props.close()
+  }
+  
   return (
       <Dialog open={props.isOpen} onClose={props.close}>
         <DialogTitle>Admin login</DialogTitle>
@@ -23,6 +35,8 @@ export default function LoginDialog(props: ILoginDialogProps) {
             label="Email Address"
             type="email"
             fullWidth
+            value={email}
+            onChange={(event) => setEmail(event.target.value)}
             variant="standard"
           />
           <TextField
@@ -31,12 +45,14 @@ export default function LoginDialog(props: ILoginDialogProps) {
             label="Password"
             type="password"
             fullWidth
+            value={password}
+            onChange={(event) => setPassword(event.target.value)}
             variant="standard"
           />
         </DialogContent>
         <DialogActions>
           <Button onClick={props.close}>Cancel</Button>
-          <Button onClick={props.close}>Login</Button>
+          <Button onClick={handleLogin}>Login</Button>
         </DialogActions>
       </Dialog>
   );
