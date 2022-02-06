@@ -5,6 +5,7 @@ import { Repository } from 'typeorm';
 import { CreatePlaneDto } from './dto/create-plane.dto';
 import { UpdatePlaneDto } from './dto/update-plane.dto';
 import { Plane } from './plane.entity';
+import { PaginatedResponse } from 'src/typings';
 
 @Injectable()
 export class PlaneService {
@@ -27,8 +28,18 @@ export class PlaneService {
     return plane;
   }
 
-  async findAll(): Promise<Plane[]> {
-    return this.planeRepository.find({});
+  async findAll(skip = 0, take = 9): Promise<PaginatedResponse<Plane>> {
+    const [results, total] = await this.planeRepository.findAndCount({
+      take,
+      skip,
+    });
+    return {
+      results,
+      status: {
+        offset: skip,
+        total,
+      },
+    };
   }
 
   async update(id: number, data: UpdatePlaneDto): Promise<Plane> {

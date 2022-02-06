@@ -25,6 +25,9 @@ export class Plane {
   description: string;
 
   @Column()
+  price: number;
+
+  @Column()
   photoUrl: string;
 
   @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
