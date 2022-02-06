@@ -1,8 +1,10 @@
-import { Container, Grid, CircularProgress, Alert, AlertTitle } from '@mui/material';
+import { Container, Grid, CircularProgress, Alert, AlertTitle, Pagination } from '@mui/material';
 import { useEffect } from 'react';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import PlaneCard from './PlaneCard/PlaneCard';
 import { fetchPlanes, selectPlanes } from './planeListSlice';
+
+const PLANES_PER_PAGE = 9;
 
 export function PlaneList() {
   const dispatch = useAppDispatch()
@@ -32,9 +34,16 @@ export function PlaneList() {
       }
       case 'succeeded': {
         return (
+          <>
           <Grid container spacing={2}>
             {planeCards}
           </Grid>
+          {planeCards.length / PLANES_PER_PAGE > 1 && (
+            <Container sx={{ display: 'flex', justifyContent: 'center', mt: '20px'}}>
+              <Pagination count={planeCards.length / PLANES_PER_PAGE} />
+            </Container>
+          )}
+          </>
         )
       }
       case 'failed': {
