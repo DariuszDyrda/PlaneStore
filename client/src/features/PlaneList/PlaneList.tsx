@@ -1,5 +1,5 @@
 import { Container, Grid, CircularProgress, Alert, AlertTitle, Pagination } from '@mui/material';
-import { useEffect } from 'react';
+import { ChangeEvent, useEffect, useState } from 'react';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import PlaneCard from './PlaneCard/PlaneCard';
 import { fetchPlanes, selectPlanes } from './planeListSlice';
@@ -10,13 +10,19 @@ export function PlaneList() {
   const dispatch = useAppDispatch()
   const planes = useAppSelector(selectPlanes)
 
+  const [page, setPage] = useState(1);
+  const handlePageChange = (event: ChangeEvent<unknown>, value: number) => {
+    dispatch(fetchPlanes({ skip: (value-1) * PLANES_PER_PAGE, take: PLANES_PER_PAGE }))
+    setPage(value);
+  };
+
   const planesFetchStatus = useAppSelector(state => state.planeList.status)
 
   useEffect(() => {
     if (planesFetchStatus === 'idle') {
-      dispatch(fetchPlanes({ skip: 0, take: PLANES_PER_PAGE }))
+      dispatch(fetchPlanes({ skip: (page-1) * PLANES_PER_PAGE, take: PLANES_PER_PAGE }))
     }
-  }, [planesFetchStatus, dispatch])
+  }, [planesFetchStatus, dispatch, page])
 
 
   let planeCards = planes.results.map((plane) => (
@@ -40,7 +46,7 @@ export function PlaneList() {
           </Grid>
           {Math.ceil(planes.status.total / PLANES_PER_PAGE) > 1 && (
             <Container sx={{ display: 'flex', justifyContent: 'center', mt: '20px'}}>
-              <Pagination count={Math.ceil(planes.status.total / PLANES_PER_PAGE)} />
+              <Pagination page={page} onChange={handlePageChange} size="large" count={Math.ceil(planes.status.total / PLANES_PER_PAGE)} />
             </Container>
           )}
           </>
