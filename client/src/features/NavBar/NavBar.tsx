@@ -1,7 +1,7 @@
-import * as React from 'react';
 import { styled, alpha } from '@mui/material/styles';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
+import Button from '@mui/material/Button';
 import Toolbar from '@mui/material/Toolbar';
 import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
@@ -9,9 +9,10 @@ import InputBase from '@mui/material/InputBase';
 import FlightIcon from '@mui/icons-material/Flight';
 import SearchIcon from '@mui/icons-material/Search';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
-import { ChangeEvent } from 'react';
+import { ChangeEvent, useState } from 'react';
 import { fetchPlanes } from '../PlaneList/planeListSlice';
 import { selectSearchQuery, setSearch } from './searchSlice';
+import LoginDialog from '../LoginDialog/LoginDialog';
 
 const Search = styled('div')(({ theme }) => ({
   position: 'relative',
@@ -56,6 +57,7 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 }));
 
 export function NavBar() {
+  const [openLoginDialog, setOpenLoginDialog] = useState(false);
   const dispatch = useAppDispatch();
   const searchQuery = useAppSelector(selectSearchQuery);
   const handleChange = (event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -75,6 +77,8 @@ export function NavBar() {
           >
             <FlightIcon />
           </IconButton>
+          <Button color="inherit" onClick={() => setOpenLoginDialog(true)}>Login</Button>
+          <LoginDialog isOpen={openLoginDialog} close={() => setOpenLoginDialog(false)}/>
           <Typography
             variant="h6"
             noWrap
