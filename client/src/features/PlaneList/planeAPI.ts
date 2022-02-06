@@ -9,7 +9,7 @@ export interface PlaneAPIResponse {
   }
 }
 
-const API_URL = 'http://localhost:8000'
+const API_URL = process.env.REACT_APP_API_URL;
 
 export async function getPlanes(skip: number, take: number, search?: string): Promise<PlaneAPIResponse> {
   const searchQuery = search ? `&search=${search}` : '';

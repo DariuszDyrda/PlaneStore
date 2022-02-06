@@ -8,6 +8,9 @@ import Typography from '@mui/material/Typography';
 import BuyDialog from '../../BuyDialog/BuyDialog';
 import { useState } from 'react';
 import { AlertColor, Snackbar, Alert } from '@mui/material';
+
+const PHOTO_PLACEHOLDER = 'https://pixy.org/src/40/thumbs350/405353.jpg';
+
 export interface IPlaneProps {
   id: number;
   name: string;
@@ -25,6 +28,11 @@ export default function PlaneCard(plane: IPlaneProps) {
     severity: 'success',
     message: 'Your order was places successfully',
   })
+  const [photoUrl, setPhotoUrl] = useState(plane.photoUrl);
+
+  const handlePhotoError = () => {
+    setPhotoUrl(PHOTO_PLACEHOLDER);
+  }
 
   const handleBuyClick = () => {
     setOpenBuyDialog(true);
@@ -54,8 +62,8 @@ export default function PlaneCard(plane: IPlaneProps) {
       <CardMedia
         component="img"
         height="194"
-        // TODO - show photo placeholder when image can't be loaded
-        image={plane.photoUrl}
+        image={photoUrl}
+        onError={handlePhotoError}
         alt={plane.name}
       />
       <CardContent>
@@ -64,7 +72,6 @@ export default function PlaneCard(plane: IPlaneProps) {
         </Typography>
       </CardContent>
       <CardActions sx={{ display: 'flex', justifyContent: 'center'}}>
-        <Button variant="outlined">Learn more</Button>
         <Button variant="contained" onClick={handleBuyClick}>Buy now!</Button>
       </CardActions>
       { openBuyDialog && (

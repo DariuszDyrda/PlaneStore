@@ -18,7 +18,7 @@ export interface OrderAPIResponse {
 
 export type PlaceOrderData = Pick<OrderAPIResponse, 'clientName' | 'clientAddress' | 'planeId'>;
 
-const API_URL = 'http://localhost:8000'
+const API_URL = process.env.REACT_APP_API_URL;
 
 export async function postOrder(data: PlaceOrderData): Promise<OrderAPIResponse> {
   const response = await axios.post(API_URL + `/order`, data);
