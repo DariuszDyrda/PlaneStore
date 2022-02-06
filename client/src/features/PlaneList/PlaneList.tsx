@@ -14,7 +14,7 @@ export function PlaneList() {
 
   useEffect(() => {
     if (planesFetchStatus === 'idle') {
-      dispatch(fetchPlanes())
+      dispatch(fetchPlanes({ skip: 0, take: PLANES_PER_PAGE }))
     }
   }, [planesFetchStatus, dispatch])
 
