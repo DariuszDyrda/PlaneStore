@@ -19,7 +19,7 @@ export function PlaneList() {
   }, [planesFetchStatus, dispatch])
 
 
-  let planeCards = planes.map((plane) => (
+  let planeCards = planes.results.map((plane) => (
     <Grid key={plane.id} item xs={12} sm={6} md={4} lg={4}>
       <PlaneCard {...plane}/>
     </Grid>
@@ -38,9 +38,9 @@ export function PlaneList() {
           <Grid container spacing={2}>
             {planeCards}
           </Grid>
-          {planeCards.length / PLANES_PER_PAGE > 1 && (
+          {Math.ceil(planes.status.total / PLANES_PER_PAGE) > 1 && (
             <Container sx={{ display: 'flex', justifyContent: 'center', mt: '20px'}}>
-              <Pagination count={planeCards.length / PLANES_PER_PAGE} />
+              <Pagination count={Math.ceil(planes.status.total / PLANES_PER_PAGE)} />
             </Container>
           )}
           </>

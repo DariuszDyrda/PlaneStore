@@ -1,6 +1,14 @@
 import { IPlaneProps } from "./PlaneCard/PlaneCard";
 
-const plane = {
+export interface PlaneAPIResponse {
+  results: IPlaneProps[];
+  status: {
+    offset: number;
+    total: number;
+  }
+}
+
+const plane: IPlaneProps = {
     id: 1,
     name: 'Airbus A380',
     description: "This is a very gigantic aeroplane. It's the biggest passenger plane on the planet.",
@@ -10,9 +18,20 @@ const plane = {
     price: 30000000
 }
 
-export function getPlanes(): Promise<IPlaneProps[]> {
-    return new Promise<IPlaneProps[]>((resolve) =>
-      setTimeout(() => resolve([plane, plane, plane, plane]), 1000)
+const results = [];
+for (let i = 0; i < 34; ++i) results.push({ ...plane, id: i+1});
+
+const mockApiResponse = {
+  results: results.slice(0, 9),
+  status: {
+    offset: 0,
+    total: results.length,
+  }
+}
+
+export function getPlanes() {
+    return new Promise<PlaneAPIResponse>((resolve) =>
+      setTimeout(() => resolve(mockApiResponse), 1000)
     );
   }
   

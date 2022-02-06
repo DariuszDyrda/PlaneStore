@@ -1,17 +1,16 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { RootState } from '../../app/store';
-import { getPlanes } from './planeAPI';
-import { IPlaneProps } from './PlaneCard/PlaneCard';
+import { getPlanes, PlaneAPIResponse } from './planeAPI';
 
 export type Status = 'idle' | 'loading' | 'failed' | 'succeeded'
 
 export interface PlaneListState {
-  planes: IPlaneProps[];
+  planes: PlaneAPIResponse;
   status: Status;
 }
 
 const initialState: PlaneListState = {
-  planes: [],
+  planes: { results: [], status: { offset: 0, total: 0 }},
   status: 'idle',
 };
 
