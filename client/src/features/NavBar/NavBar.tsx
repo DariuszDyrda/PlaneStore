@@ -11,7 +11,7 @@ import SearchIcon from '@mui/icons-material/Search';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { ChangeEvent } from 'react';
 import { fetchPlanes } from '../PlaneList/planeListSlice';
-import { selectSearchQuery, setSearch } from './search';
+import { selectSearchQuery, setSearch } from './searchSlice';
 
 const Search = styled('div')(({ theme }) => ({
   position: 'relative',

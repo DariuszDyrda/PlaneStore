@@ -1,7 +1,7 @@
 import { Container, Grid, CircularProgress, Alert, AlertTitle, Pagination } from '@mui/material';
 import { ChangeEvent, useEffect, useState } from 'react';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
-import { selectSearchQuery } from '../NavBar/search';
+import { selectSearchQuery } from '../NavBar/searchSlice';
 import PlaneCard from './PlaneCard/PlaneCard';
 import { fetchPlanes, selectPlanes } from './planeListSlice';
 
