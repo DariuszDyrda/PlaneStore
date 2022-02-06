@@ -12,7 +12,7 @@ const plane = {
 
 export function getPlanes(): Promise<IPlaneProps[]> {
     return new Promise<IPlaneProps[]>((resolve) =>
-      setTimeout(() => resolve([plane, plane, plane, plane]), 500)
+      setTimeout(() => resolve([plane, plane, plane, plane]), 1000)
     );
   }
   

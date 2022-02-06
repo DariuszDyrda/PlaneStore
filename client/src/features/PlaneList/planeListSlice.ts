@@ -3,9 +3,11 @@ import { RootState } from '../../app/store';
 import { getPlanes } from './planeAPI';
 import { IPlaneProps } from './PlaneCard/PlaneCard';
 
+export type Status = 'idle' | 'loading' | 'failed' | 'succeeded'
+
 export interface PlaneListState {
   planes: IPlaneProps[];
-  status: 'idle' | 'loading' | 'failed' | 'succeeded';
+  status: Status;
 }
 
 const initialState: PlaneListState = {
