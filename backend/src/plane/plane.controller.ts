@@ -9,6 +9,8 @@ import {
   Query,
   Req,
   UseGuards,
+  UsePipes,
+  ValidationPipe,
 } from '@nestjs/common';
 import { IdParams, PaginatedResponse } from '../typings';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
@@ -24,6 +26,7 @@ import {
   ApiUnauthorizedResponse,
 } from '@nestjs/swagger';
 import { UpdatePlaneDto } from './dto/update-plane.dto';
+import { FindPlanesDto } from './dto/find-planes.dto';
 
 @Controller('plane')
 @ApiTags('plane')
@@ -74,8 +77,9 @@ export class PlaneController {
     type: [Plane],
   })
   @ApiUnauthorizedResponse()
-  findAll(@Query() query): Promise<PaginatedResponse<Plane>> {
-    return this.planeService.findAll(query.$skip, query.$limit);
+  @UsePipes(new ValidationPipe({ transform: true }))
+  findAll(@Query() query: FindPlanesDto): Promise<PaginatedResponse<Plane>> {
+    return this.planeService.findAll(query.skip, query.take);
   }
 
   @ApiBearerAuth()
