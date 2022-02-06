@@ -79,7 +79,7 @@ export class PlaneController {
   @ApiUnauthorizedResponse()
   @UsePipes(new ValidationPipe({ transform: true }))
   findAll(@Query() query: FindPlanesDto): Promise<PaginatedResponse<Plane>> {
-    return this.planeService.findAll(query.skip, query.take);
+    return this.planeService.findAll(query.skip, query.take, query.search);
   }
 
   @ApiBearerAuth()
