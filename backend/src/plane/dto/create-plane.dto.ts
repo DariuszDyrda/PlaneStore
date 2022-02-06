@@ -1,4 +1,4 @@
-import { MaxLength } from 'class-validator';
+import { IsNumber, MaxLength } from 'class-validator';
 import { STRING_MAX_LENGTH } from '../../typings';
 
 export class CreatePlaneDto {
@@ -8,4 +8,6 @@ export class CreatePlaneDto {
   description!: string;
   @MaxLength(STRING_MAX_LENGTH)
   photoUrl!: string;
+  @IsNumber({ maxDecimalPlaces: 2 })
+  price!: number;
 }

@@ -10,6 +10,7 @@ const planeData = {
   description: 'The biggest passenger plane on the planet',
   photoUrl: 'https://planes.com/photos/airbus-a380.png',
   createdById: 1,
+  price: 30000000.01,
 };
 
 const now = new Date();
