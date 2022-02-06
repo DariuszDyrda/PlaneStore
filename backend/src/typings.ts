@@ -6,3 +6,11 @@ export class IdParams {
   @IsNumberString()
   id: number;
 }
+
+export class PaginatedResponse<T> {
+  results: T[];
+  status: {
+    offset: number;
+    total: number;
+  };
+}

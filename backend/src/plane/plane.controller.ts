@@ -6,10 +6,11 @@ import {
   Param,
   Post,
   Put,
+  Query,
   Req,
   UseGuards,
 } from '@nestjs/common';
-import { IdParams } from '../typings';
+import { IdParams, PaginatedResponse } from '../typings';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { CreatePlaneDto } from './dto/create-plane.dto';
 import { Plane } from './plane.entity';
@@ -73,8 +74,8 @@ export class PlaneController {
     type: [Plane],
   })
   @ApiUnauthorizedResponse()
-  findAll(): Promise<Plane[]> {
-    return this.planeService.findAll();
+  findAll(@Query() query): Promise<PaginatedResponse<Plane>> {
+    return this.planeService.findAll(query.$skip, query.$limit);
   }
 
   @ApiBearerAuth()

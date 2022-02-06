@@ -35,13 +35,8 @@ describe('PlaneService', () => {
           ...data,
         }),
       ),
-      find: jest.fn((data) =>
-        Promise.resolve([
-          {
-            ...planeData,
-            ...data,
-          },
-        ]),
+      findAndCount: jest.fn((data) =>
+        Promise.resolve([[{ ...planeData, ...data }], 1]),
       ),
     };
 
@@ -115,16 +110,22 @@ describe('PlaneService', () => {
   });
 
   describe('.findAll', () => {
+    it('should return paginated response', async () => {
+      const result = await service.findAll();
+      expect(result).toHaveProperty('results');
+      expect(result).toHaveProperty('status');
+    });
     it('should return array of plane documents', async () => {
       const result = await service.findAll();
-      expect(result).toHaveLength(1);
+      expect(result.results).toHaveLength(1);
     });
     it('should return empty array', async () => {
       jest
-        .spyOn(mockPlaneRepo, 'find')
-        .mockImplementation(() => Promise.resolve([]));
+        .spyOn(mockPlaneRepo, 'findAndCount')
+        .mockImplementation(() => Promise.resolve([[], 0]));
       const result = await service.findAll();
-      expect(result).toHaveLength(0);
+      expect(result.results).toHaveLength(0);
+      expect(result.status.total).toEqual(0);
     });
   });
 });
