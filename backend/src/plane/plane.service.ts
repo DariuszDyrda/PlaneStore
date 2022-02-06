@@ -1,7 +1,7 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { ERROR_MESSAGE } from '../constants/error_messages';
-import { Repository } from 'typeorm';
+import { Like, Repository } from 'typeorm';
 import { CreatePlaneDto } from './dto/create-plane.dto';
 import { UpdatePlaneDto } from './dto/update-plane.dto';
 import { Plane } from './plane.entity';
@@ -28,8 +28,13 @@ export class PlaneService {
     return plane;
   }
 
-  async findAll(skip = 0, take = 9): Promise<PaginatedResponse<Plane>> {
+  async findAll(
+    skip = 0,
+    take = 9,
+    search?: string,
+  ): Promise<PaginatedResponse<Plane>> {
     const [results, total] = await this.planeRepository.findAndCount({
+      where: search ? { name: Like(`%${search}%`) } : undefined,
       take,
       skip,
     });
