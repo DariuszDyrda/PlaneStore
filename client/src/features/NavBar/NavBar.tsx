@@ -8,6 +8,10 @@ import Typography from '@mui/material/Typography';
 import InputBase from '@mui/material/InputBase';
 import FlightIcon from '@mui/icons-material/Flight';
 import SearchIcon from '@mui/icons-material/Search';
+import { useAppDispatch, useAppSelector } from '../../app/hooks';
+import { ChangeEvent } from 'react';
+import { fetchPlanes } from '../PlaneList/planeListSlice';
+import { selectSearchQuery, setSearch } from './search';
 
 const Search = styled('div')(({ theme }) => ({
   position: 'relative',
@@ -52,6 +56,12 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 }));
 
 export function NavBar() {
+  const dispatch = useAppDispatch();
+  const searchQuery = useAppSelector(selectSearchQuery);
+  const handleChange = (event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    dispatch(fetchPlanes({ skip: 0, take: 9, search: event.target.value }))
+    dispatch(setSearch(event.target.value));
+  }
   return (
     <Box sx={{ flexGrow: 1 }}>
       <AppBar position="static">
@@ -80,6 +90,8 @@ export function NavBar() {
             <StyledInputBase
               placeholder="Search…"
               inputProps={{ 'aria-label': 'search' }}
+              value={searchQuery}
+              onChange={handleChange}
             />
           </Search>
         </Toolbar>

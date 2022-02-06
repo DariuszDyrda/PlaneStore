@@ -1,11 +1,13 @@
 import { configureStore, ThunkAction, Action } from '@reduxjs/toolkit';
 import counterReducer from '../features/counter/counterSlice';
 import planeListReducer from '../features/PlaneList/planeListSlice';
+import searchReducer from '../features/NavBar/search'
 
 export const store = configureStore({
   reducer: {
     counter: counterReducer,
     planeList: planeListReducer,
+    search: searchReducer,
   },
 });
 

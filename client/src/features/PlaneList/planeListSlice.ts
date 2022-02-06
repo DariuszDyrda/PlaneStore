@@ -16,8 +16,8 @@ const initialState: PlaneListState = {
 
 export const fetchPlanes = createAsyncThunk(
   'planeList/getPlanes',
-  async (query: { skip: number, take: number}) => {
-    const response = await getPlanes(query.skip, query.take);
+  async (query: { skip: number, take: number, search?: string}) => {
+    const response = await getPlanes(query.skip, query.take, query.search);
     return response;
   }
 );

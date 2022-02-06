@@ -1,6 +1,7 @@
 import { Container, Grid, CircularProgress, Alert, AlertTitle, Pagination } from '@mui/material';
 import { ChangeEvent, useEffect, useState } from 'react';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
+import { selectSearchQuery } from '../NavBar/search';
 import PlaneCard from './PlaneCard/PlaneCard';
 import { fetchPlanes, selectPlanes } from './planeListSlice';
 
@@ -9,10 +10,11 @@ const PLANES_PER_PAGE = 9;
 export function PlaneList() {
   const dispatch = useAppDispatch()
   const planes = useAppSelector(selectPlanes)
+  const search = useAppSelector(selectSearchQuery);
 
   const [page, setPage] = useState(1);
   const handlePageChange = (event: ChangeEvent<unknown>, value: number) => {
-    dispatch(fetchPlanes({ skip: (value-1) * PLANES_PER_PAGE, take: PLANES_PER_PAGE }))
+    dispatch(fetchPlanes({ skip: (value-1) * PLANES_PER_PAGE, take: PLANES_PER_PAGE, search }))
     setPage(value);
   };
 
