@@ -1,12 +1,12 @@
 import './App.css';
+import { NavBar } from './features/NavBar/NavBar';
 import { PlaneList } from './features/PlaneList/PlaneList';
 
 function App() {
   return (
     <div className="App">
-      <header className="App-header">
-        <PlaneList />
-      </header>
+      <NavBar />
+      <PlaneList />
     </div>
   );
 }
