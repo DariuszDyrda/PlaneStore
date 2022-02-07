@@ -29,7 +29,7 @@ export function PlaneList() {
 
   let planeCards = planes.results.map((plane) => (
     <Grid key={plane.id} item xs={12} sm={6} md={4} lg={4}>
-      <PlaneCard {...plane}/>
+      <PlaneCard {...plane} />
     </Grid>
   ))
 

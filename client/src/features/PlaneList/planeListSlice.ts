@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { RootState, Status } from '../../app/store';
-import { getPlanes, PlaneAPIResponse } from './planeAPI';
+import { deletePlaneAPI, getPlanesAPI, PlaneAPIResponse } from './planeAPI';
 
 export interface PlaneListState {
   planes: PlaneAPIResponse;
@@ -15,8 +15,15 @@ const initialState: PlaneListState = {
 export const fetchPlanes = createAsyncThunk(
   'planeList/getPlanes',
   async (query: { skip: number, take: number, search?: string}) => {
-    const response = await getPlanes(query.skip, query.take, query.search);
+    const response = await getPlanesAPI(query.skip, query.take, query.search);
     return response;
+  }
+);
+
+export const deletePlane = createAsyncThunk(
+  'planeList/deletePlane',
+  async (data: { id: number, token: string }) => {
+    return await deletePlaneAPI(data.id, data.token);
   }
 );
 
@@ -26,6 +33,7 @@ export const planeListSlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder
+       // fetch planes
       .addCase(fetchPlanes.pending, (state) => {
         state.status = 'loading';
       })
@@ -35,7 +43,13 @@ export const planeListSlice = createSlice({
       .addCase(fetchPlanes.fulfilled, (state, action) => {
         state.status = 'succeeded';
         state.planes = action.payload;
-      });
+      })
+      // delete plane
+      .addCase(deletePlane.fulfilled, (state, action) => {
+        state.status = 'succeeded';
+        const planesArr = state.planes.results
+        state.planes.results = planesArr.filter((el) => el.id !== action.payload);
+      })
   },
 });
 

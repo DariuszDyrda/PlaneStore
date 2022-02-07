@@ -8,8 +8,10 @@ import Typography from '@mui/material/Typography';
 import BuyDialog from '../../BuyDialog/BuyDialog';
 import { useState } from 'react';
 import { AlertColor, Snackbar, Alert } from '@mui/material';
-import { useAppSelector } from '../../../app/hooks';
-import { selectAdmin } from '../../LoginDialog/loginSlicer';
+import { useAppDispatch, useAppSelector } from '../../../app/hooks';
+import { selectAccessToken, selectAdmin } from '../../LoginDialog/loginSlicer';
+import { deletePlane } from '../planeListSlice';
+import DeleteConfirmDialog from './DeleteConfirmDialog';
 
 const PHOTO_PLACEHOLDER = 'https://pixy.org/src/40/thumbs350/405353.jpg';
 
@@ -32,17 +34,19 @@ export default function PlaneCard(plane: IPlaneProps) {
   })
   const [photoUrl, setPhotoUrl] = useState(plane.photoUrl);
 
+  const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
+  const dispatch = useAppDispatch();
+  const accessToken = useAppSelector(selectAccessToken);
+  const handleDelete = () => {
+    if (!accessToken) return;
+    dispatch(deletePlane({ id: plane.id, token: accessToken }));
+    setOpenDeleteDialog(false);
+  }
+
   const admin = useAppSelector(selectAdmin);
 
   const handlePhotoError = () => {
     setPhotoUrl(PHOTO_PLACEHOLDER);
-  }
-
-  const handleBuyClick = () => {
-    setOpenBuyDialog(true);
-  }
-  const handleCloseClick = () => {
-    setOpenBuyDialog(false)
   }
 
   const handleCloseSnackBar = () => {
@@ -76,12 +80,15 @@ export default function PlaneCard(plane: IPlaneProps) {
         </Typography>
       </CardContent>
       <CardActions sx={{ display: 'flex', justifyContent: 'center'}}>
-        { !admin && (<Button variant="contained" onClick={handleBuyClick}>Buy now!</Button>) }
+        { !admin && (<Button variant="contained" onClick={() => setOpenBuyDialog(true)}>Buy now!</Button>) }
         { admin && (<Button variant="contained" onClick={undefined}>Edit</Button>) }
-        { admin && (<Button variant="contained" color='error' onClick={undefined}>Delete</Button>) }
+        { admin && (<Button variant="contained" color='error' onClick={() => setOpenDeleteDialog(true)}>Delete</Button>) }
       </CardActions>
       { openBuyDialog && (
-        <BuyDialog onClose={handleCloseClick} plane={plane} displaySnackBar={displaySnackBar} isSnackBarOpen={snackBarState.open} />
+        <BuyDialog onClose={() => setOpenBuyDialog(false)} plane={plane} displaySnackBar={displaySnackBar} isSnackBarOpen={snackBarState.open} />
+      )}
+      { openDeleteDialog && (
+        <DeleteConfirmDialog onClose={() => setOpenDeleteDialog(false)} onAgree={handleDelete} />
       )}
       <Snackbar open={snackBarState.open} autoHideDuration={3000} onClose={handleCloseSnackBar}>
           <Alert severity={snackBarState.severity as AlertColor} sx={{ width: '100%' }}>
