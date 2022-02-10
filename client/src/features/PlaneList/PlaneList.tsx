@@ -5,7 +5,7 @@ import { selectSearchQuery } from '../NavBar/searchSlice';
 import PlaneCard from './PlaneCard/PlaneCard';
 import { fetchPlanes, selectPlanes } from './planeListSlice';
 
-const PLANES_PER_PAGE = 9;
+export const PLANES_PER_PAGE = 9;
 
 export function PlaneList() {
   const dispatch = useAppDispatch()
