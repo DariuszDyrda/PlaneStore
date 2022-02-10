@@ -40,7 +40,6 @@ export default function EditDialog(props: IEditDialogProps) {
   }
 
   const requestStatus = useAppSelector(selectRequestStatus);
-  console.log(`RequestStatus ${requestStatus}`);
   const accessToken = useAppSelector(selectAccessToken);
 
   const handleEditClick = () => {
