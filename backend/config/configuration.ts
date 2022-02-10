@@ -3,8 +3,8 @@ export const configuration = () => ({
   port: parseInt(process.env.PORT, 10) || 8000,
   jwt: {
     secret: process.env.JWT_SECRET,
-    accessTokenExpiresIn: '3600s',
-    refreshTokenExpiresIn: '5400s',
+    accessTokenExpiresIn: '172800s', // 2 days
+    refreshTokenExpiresIn: '259200s', // 3 days
   },
   database: {
     host: process.env.MYSQL_HOST,

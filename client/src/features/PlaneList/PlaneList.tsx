@@ -5,7 +5,7 @@ import { selectSearchQuery } from '../NavBar/searchSlice';
 import PlaneCard from './PlaneCard/PlaneCard';
 import { fetchPlanes, selectPlanes } from './planeListSlice';
 
-const PLANES_PER_PAGE = 9;
+export const PLANES_PER_PAGE = 9;
 
 export function PlaneList() {
   const dispatch = useAppDispatch()
@@ -29,7 +29,7 @@ export function PlaneList() {
 
   let planeCards = planes.results.map((plane) => (
     <Grid key={plane.id} item xs={12} sm={6} md={4} lg={4}>
-      <PlaneCard {...plane}/>
+      <PlaneCard {...plane} />
     </Grid>
   ))
 
