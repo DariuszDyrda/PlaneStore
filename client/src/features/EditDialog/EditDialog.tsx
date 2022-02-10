@@ -26,16 +26,38 @@ export default function EditDialog(props: IEditDialogProps) {
     description: props.plane?.description || '',
     price: props.plane?.price || 0,
     photoUrl: props.plane?.photoUrl || '',
+    nameValid: props.plane?.name ? true : false,
+    descriptionValid: props.plane?.description ? true : false,
+    priceValid: props.plane?.price ? true : false,
+    photoUrlValid: props.plane?.photoUrl ? true : false,
   });
   const [loading, setLoading] = useState(false);
 
   const dispatch = useAppDispatch();
 
+  const validateField = (fieldName: string, value: string): boolean => {
+    switch (fieldName) {
+      case 'name':
+        return value.length > 0 && value.length < 250;
+      case 'description':
+        return value.length > 0 && value.length < 500;
+      case 'photoUrl':
+        return value.length > 0 && value.length < 500;
+      case 'price':
+        return !isNaN(+value)
+      default:
+        return false;
+    }
+  }
+
+
   const handleChange = (evt: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const value = evt.target.value;
+    const validationField = evt.target.id + 'Valid';
     setState({
       ...state,
-      [evt.target.id]: value
+      [evt.target.id]: value,
+      [validationField]: validateField(evt.target.id, value),
     });
   }
 
@@ -83,6 +105,7 @@ export default function EditDialog(props: IEditDialogProps) {
       <DialogTitle>{props?.plane?.name ? `Edit ${props.plane.name}` : `Add plane`}</DialogTitle>
       <DialogContent>
         <TextField
+          error={!state.nameValid}
           autoFocus
           required
           margin="dense"
@@ -93,6 +116,7 @@ export default function EditDialog(props: IEditDialogProps) {
           onChange={handleChange}
         />
         <TextField
+          error={!state.descriptionValid}
           required
           margin="dense"
           id="description"
@@ -103,6 +127,7 @@ export default function EditDialog(props: IEditDialogProps) {
           onChange={handleChange}
         />
         <TextField
+          error={!state.photoUrlValid}
           required
           margin="dense"
           id="photoUrl"
@@ -112,6 +137,7 @@ export default function EditDialog(props: IEditDialogProps) {
           onChange={handleChange}
         />
         <TextField
+          error={!state.priceValid}
           required
           margin="dense"
           id="price"
@@ -123,7 +149,7 @@ export default function EditDialog(props: IEditDialogProps) {
       </DialogContent>
       <DialogActions>
         <Button onClick={props.onClose}>Cancel</Button>
-        <LoadingButton loading={loading} variant="contained" onClick={handleEditClick}>
+        <LoadingButton loading={loading} variant="contained" onClick={handleEditClick} disabled={!(state.nameValid && state.descriptionValid && state.photoUrlValid && state.priceValid)}>
           {props.plane ? "Edit" : "Add"}
         </LoadingButton>
       </DialogActions>
