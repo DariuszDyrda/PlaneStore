@@ -35,7 +35,9 @@ export class Order {
   planeId: number;
 
   @ApiHideProperty()
-  @ManyToOne(() => Plane, (plane) => plane.id)
+  @ManyToOne(() => Plane, (plane) => plane.id, {
+    onDelete: 'SET NULL',
+  })
   plane: Plane;
 
   @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
